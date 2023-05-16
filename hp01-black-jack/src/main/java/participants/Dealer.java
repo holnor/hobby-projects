@@ -35,4 +35,9 @@ public class Dealer extends Participant {
     public List<Card> getPile() {
         return pile;
     }
+
+    @Override
+    public String toString() {
+        return "DEALER\n----------------\n" + hand;
+    }
 }
