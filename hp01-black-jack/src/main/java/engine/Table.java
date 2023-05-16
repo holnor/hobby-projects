@@ -89,6 +89,7 @@ public class Table {
         for (Participant player : players) {
             String command = "";
             while (player.isActive() && !command.equals("stand")) {
+                System.out.println(player);
                 System.out.println(player.getName() + ", make an action!");
                 command = ui.getCommand();
 
