@@ -38,12 +38,18 @@ public class Dealer extends Participant {
         return pile;
     }
 
+
+    @Override
+    public void hit() {
+        deal(this);
+    }
+
     @Override
     public String toString() {
         int value = 0;
         for (Card card : hand) {
             value += card.getValue();
         }
-        return "\n----------DEALER----------\n" + hand + "\t value: "+ value + "\n__________________________\n";
+        return "\n----------" + "\u001B[1m" + "DEALER" +  "\u001B[0m" + "----------\n" + hand + "\t value: "+ value + "\n__________________________\n";
     }
 }
