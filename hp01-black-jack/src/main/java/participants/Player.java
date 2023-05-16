@@ -16,6 +16,5 @@ public class Player extends Participant{
     @Override
     public void hit() {
         table.getDealer().deal(this);
-        System.out.println(this);
     }
 }

@@ -100,6 +100,7 @@ public class Table {
                             System.out.println("******* " + handValue + " ********");
                             command = "stand";
                         }
+                        System.out.println(player);
                         break;
                 }
             }

@@ -11,6 +11,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hobby-projects" target="1.5" />
+      <module name="hp01-cardgames" target="11" />
+      <module name="hp02-password-manager" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
