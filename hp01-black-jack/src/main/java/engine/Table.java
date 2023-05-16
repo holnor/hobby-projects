@@ -67,7 +67,12 @@ public class Table {
 
         System.out.println(dealer);
         dealer.deal(dealer);
-        displayStats();
+        for (Participant player : players) {
+            if (player.getHandValue() == BLACK_JACK){
+                System.out.println("******* BLACK JACK! ********");
+            }
+            System.out.println(player);
+        }
     }
 
     public void nextPlayer() {
@@ -86,9 +91,10 @@ public class Table {
     }
 
     public void startTurn() {
+
         for (Participant player : players) {
             String command = "";
-            while (player.isActive() && !command.equals("stand")) {
+            while (player.isActive() && !command.equals("stand") && player.getHandValue() != BLACK_JACK) {
                 System.out.println(player);
                 System.out.println(player.getName() + ", make an action!");
                 command = ui.getCommand();
