@@ -24,9 +24,7 @@ public abstract class Participant {
         this.isActive = false;
     }
 
-    public void hit() {
-
-    }
+    public abstract void hit();
 
     public void stand() {
         isActive = false;
@@ -45,19 +43,38 @@ public abstract class Participant {
 
     public void looseBet() {
         bet = 0;
+        stand();
     }
 
     public void winBet() {
         coins += bet * 2;
         bet = 0;
+        stand();
     }
 
-    public String showCards() {
-        return hand.toString();
+    public void takeBackBet(){
+        coins += bet;
+        bet = 0;
     }
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public int getHandValue(){
+        int value = 0;
+        for (Card card : hand) {
+            value += card.getValue();
+        }
+        return value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getBet() {
+        return bet;
     }
 
     //FOR TESTING
@@ -68,15 +85,11 @@ public abstract class Participant {
 
     @Override
     public String toString() {
-        int value = 0;
-        for (Card card : hand) {
-            value += card.getValue();
-        }
-        return "--- " + name + "-".repeat(30) +
+        return "--- " + "\u001B[1m" + name + "\u001B[0m" + "-".repeat(30) +
                 "\ncoins: " + coins +
                 ", bet: " + bet +
                 ", isActive: " + isActive +
-                ",\nhand: " + hand + "\t value: "+ value +"\n" +
+                ",\nhand: " + hand + "\t value: "+ getHandValue() +"\n" +
                 "-".repeat(40) + "\n";
     }
 }
