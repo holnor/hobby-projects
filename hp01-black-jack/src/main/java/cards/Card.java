@@ -29,4 +29,12 @@ public class Card {
     public char getSuit() {
         return suit;
     }
+
+    public char getRank() {
+        return rank;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }

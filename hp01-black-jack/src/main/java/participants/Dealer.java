@@ -45,6 +45,11 @@ public class Dealer extends Participant {
     }
 
     @Override
+    public void correctAceValue() {
+
+    }
+
+    @Override
     public String toString() {
         int value = 0;
         for (Card card : hand) {

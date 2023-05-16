@@ -58,6 +58,15 @@ public class Table {
         dealer.deal(dealer);
         for (int i = 0; i < FIRST_HAND_SIZE; i++) {
             dealer.deal(players);
+            for (Participant player : players) {
+                System.out.println(player);
+                Card lastCard = player.getHand().get(player.getHand().size() - 1);
+                if (lastCard.getRank() == 'A') {
+                    System.out.println(player);
+                    System.out.println("Set Ace value (1 OR 11):");
+                    lastCard.setValue(ui.getAceValue());
+                }
+            }
         }
         players.get(0).setActive(true);
 
@@ -102,6 +111,11 @@ public class Table {
                 switch (command) {
                     case "hit":
                         player.hit();
+                        Card lastCard = player.getHand().get(player.getHand().size() - 1);
+                        if (lastCard.getRank() == 'A'){
+                            System.out.println("Set Ace value (1 OR 11):");
+                            lastCard.setValue(ui.getAceValue());
+                        }
                         String handValue = checkHandValue(player);
                         if (handValue.equals("BUSTED!") || handValue.equals("BLACK JACK!")) {
                             System.out.println("******* " + handValue + " ********");
@@ -116,6 +130,10 @@ public class Table {
 
         while (dealer.getHandValue() <= 16) {
             dealer.hit();
+            Card lastCard = dealer.getHand().get(dealer.getHand().size() - 1);
+            if (lastCard.getValue() == 'A' && dealer.getHandValue() > 21){
+                lastCard.setValue(1);
+            }
         }
 
 

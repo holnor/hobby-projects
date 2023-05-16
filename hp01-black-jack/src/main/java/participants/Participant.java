@@ -72,6 +72,8 @@ public abstract class Participant {
         return value;
     }
 
+    public abstract void correctAceValue();
+
     public String getName() {
         return name;
     }

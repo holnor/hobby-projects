@@ -11,6 +11,15 @@ public class UserInterface {
         return scanner.nextInt();
     }
 
+    public int getAceValue(){
+        int value = scanner.nextInt();
+        if (value != 1 && value != 11){
+            System.out.println("Enter valid value (1 OR 11)");
+            return getAceValue();
+        }
+        return value;
+    }
+
     public String getNames() {
         return scanner.next();
     }
