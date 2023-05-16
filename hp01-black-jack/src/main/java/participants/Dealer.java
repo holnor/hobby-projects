@@ -11,8 +11,8 @@ public class Dealer extends Participant {
     private Deck deck;
     private List<Card> pile;
 
-    public Dealer() {
-        super("DEALER");
+    public Dealer(Table table) {
+        super("DEALER", table);
         super.coins = Table.DEALER_COINS;
         this.deck = new Deck();
         this.pile = new ArrayList<>();

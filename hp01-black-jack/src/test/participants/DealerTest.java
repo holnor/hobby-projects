@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DealerTest {
     private List<Participant> players;
-    private Participant aladar = new Player("Aladár");
-    private Participant bela = new Player("Béla");
+    private Participant aladar = new Player("Aladár", null);
+    private Participant bela = new Player("Béla", null);
     private Dealer dealer;
 
     @BeforeEach
     void init(){
-        dealer = new Dealer();
+        dealer = new Dealer(null);
         players = new ArrayList<>();
         players.add(aladar);
         players.add(bela);
