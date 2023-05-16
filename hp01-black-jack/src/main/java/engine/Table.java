@@ -16,6 +16,7 @@ public class Table {
     public static final int CARDS_REMOVE_BOUND_HIGH = 35;
     public static final int FIRST_HAND_SIZE = 2;
     public static final int BLACK_JACK = 21;
+    public static final int MIN_BET = 5;
     public static final int DEALER_COINS = 1_000_000;
 
     private Dealer dealer;
@@ -61,13 +62,52 @@ public class Table {
         players.get(0).setActive(true);
 
         for (Participant player : players) {
-            player.placeBet(5);
+            player.placeBet(Table.MIN_BET);
         }
 
         System.out.println(dealer);
         dealer.deal(dealer);
         displayStats();
 
+        for (Participant player : players) {
+            if (checkHandValue(player).equals("BLACK JACK!")) {
+                check21(player);
+            }
+        }
+    }
+
+    public void checkBusted(Participant player) {
+        if (checkHandValue(player).equals("BUSTED!")) {
+            System.out.println(player.getName() + " gets busted! Lost bet: " + player.getBet() + " coins");
+            player.looseBet();
+            System.out.println(player);
+        }
+    }
+
+    public void check21(Participant player) {
+        if (checkHandValue(player).equals("BLACK JACK!")) {
+            System.out.println(dealer);
+            if (!checkHandValue(dealer).equals("BLACK JACK!")) {
+                System.out.println(player.getName() + " wins! Prize: " + player.getBet() * 2 + " coins");
+                player.winBet();
+                System.out.println(player);
+            } else {
+                player.takeBackBet();
+                System.out.println("DRAW! " + player.getName() + " bet is returned");
+            }
+        }
+    }
+
+    public String checkHandValue(Participant player) {
+        int handValue = player.getHandValue();
+
+        if (handValue > Table.BLACK_JACK) {
+            return "BUSTED!";
+        } else if (handValue == Table.BLACK_JACK) {
+            return "BLACK JACK!";
+        } else {
+            return "";
+        }
     }
 
 
