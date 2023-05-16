@@ -56,6 +56,9 @@ public abstract class Participant {
         return hand.toString();
     }
 
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     //FOR TESTING
 
@@ -65,12 +68,15 @@ public abstract class Participant {
 
     @Override
     public String toString() {
-        return "-".repeat(50) +
-                "\nname: " + name +
-                ", coins: " + coins +
+        int value = 0;
+        for (Card card : hand) {
+            value += card.getValue();
+        }
+        return "--- " + name + "-".repeat(30) +
+                "\ncoins: " + coins +
                 ", bet: " + bet +
                 ", isActive: " + isActive +
-                ",\nhand: " + hand + "\n" +
-                "-".repeat(50);
+                ",\nhand: " + hand + "\t value: "+ value +"\n" +
+                "-".repeat(50) + "\n";
     }
 }

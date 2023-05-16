@@ -20,11 +20,13 @@ public class Dealer extends Participant {
 
     public void deal(Participant player) {
         player.hand.add(deck.getDeck().get(0));
+        deck.getDeck().remove(0);
     }
 
     public void deal(List<Participant> players) {
         for (Participant player : players) {
             player.hand.add(deck.getDeck().get(0));
+            deck.getDeck().remove(0);
         }
     }
 
@@ -38,6 +40,10 @@ public class Dealer extends Participant {
 
     @Override
     public String toString() {
-        return "DEALER\n----------------\n" + hand;
+        int value = 0;
+        for (Card card : hand) {
+            value += card.getValue();
+        }
+        return "DEALER\n----------------\n" + hand + "\t value: "+ value +"\n" + "\n_______________________";
     }
 }

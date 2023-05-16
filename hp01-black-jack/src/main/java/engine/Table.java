@@ -52,14 +52,28 @@ public class Table {
     }
 
     public void firstHand() {
+        dealer.deal(dealer);
         for (int i = 0; i < FIRST_HAND_SIZE; i++) {
-            dealer.deal(dealer);
             dealer.deal(players);
         }
+        players.get(0).setActive(true);
 
+        for (Participant player : players) {
+            player.placeBet(5);
+        }
+
+        System.out.println(dealer);
+        dealer.deal(dealer);
+        displayStats();
 
     }
 
+
+    public void displayStats() {
+        for (Participant player : players) {
+            System.out.println(player);
+        }
+    }
 
     //FOR TESTING
 
