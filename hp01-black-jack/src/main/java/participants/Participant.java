@@ -49,7 +49,6 @@ public abstract class Participant {
     public void winBet() {
         coins += bet * 2;
         bet = 0;
-        stand();
     }
 
     public void takeBackBet(){
@@ -59,6 +58,10 @@ public abstract class Participant {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     public int getHandValue(){

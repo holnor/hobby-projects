@@ -68,12 +68,79 @@ public class Table {
         System.out.println(dealer);
         dealer.deal(dealer);
         displayStats();
+    }
 
-        for (Participant player : players) {
-            if (checkHandValue(player).equals("BLACK JACK!")) {
-                check21(player);
+    public void nextPlayer() {
+        if (players.get(players.size() - 1).isActive()) {
+            players.get(players.size() - 1).setActive(false);
+
+        } else {
+            for (int i = 0; i < players.size() - 1; i++) {
+                if (players.get(i).isActive()) {
+                    players.get(i).setActive(false);
+                    players.get(i + 1).setActive(true);
+                    break;
+                }
             }
         }
+    }
+
+    public void startTurn() {
+        for (Participant player : players) {
+            String command = "";
+            while (player.isActive() && !command.equals("stand")) {
+                System.out.println(player.getName() + ", make an action!");
+                command = ui.getCommand();
+
+                switch (command) {
+                    case "hit":
+                        player.hit();
+                        String handValue = checkHandValue(player);
+                        if (handValue.equals("BUSTED!") || handValue.equals("BLACK JACK!")) {
+                            System.out.println("******* " + handValue + " ********");
+                            command = "stand";
+                        }
+                        break;
+                }
+            }
+            nextPlayer();
+        }
+
+        while (dealer.getHandValue() <= 16) {
+            dealer.hit();
+        }
+
+
+        List<Participant> winners = new ArrayList<>();
+        List<Participant> loosers = new ArrayList<>();
+
+
+        for (Participant player : players) {
+            if (dealer.getHandValue() > 21) {
+                if (player.getHandValue() <= 21) {
+                    winners.add(player);
+                } else {
+                    loosers.add(player);
+                }
+            } else {
+                if (player.getHandValue() <= 21 && player.getHandValue() > dealer.getHandValue()) {
+                    winners.add(player);
+                } else {
+                    loosers.add(player);
+                }
+            }
+        }
+
+        System.out.println(dealer);
+        System.out.println("Winners:");
+        for (Participant winner : winners) {
+            System.out.println(winner.getName() + ": " + winner.getHand() + " (" + winner.getHandValue()+ ")");
+        }
+        System.out.println("Loosers:");
+        for (Participant looser : loosers) {
+            System.out.println(looser.getName() + ": " + looser.getHand() + " (" + looser.getHandValue()+ ")");
+        }
+
     }
 
     public void checkBusted(Participant player) {
@@ -84,7 +151,7 @@ public class Table {
         }
     }
 
-    public void check21(Participant player) {
+    public void check(Participant player) {
         if (checkHandValue(player).equals("BLACK JACK!")) {
             System.out.println(dealer);
             if (!checkHandValue(dealer).equals("BLACK JACK!")) {
@@ -95,6 +162,8 @@ public class Table {
                 player.takeBackBet();
                 System.out.println("DRAW! " + player.getName() + " bet is returned");
             }
+        } else {
+            checkBusted(player);
         }
     }
 

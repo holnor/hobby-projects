@@ -8,5 +8,6 @@ public class App {
         bj.addPlayers();
         bj.init();
         bj.firstHand();
+        bj.startTurn();
     }
 }

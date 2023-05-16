@@ -1,6 +1,5 @@
 package participants;
 
-import cards.Card;
 import engine.Table;
 
 public class Player extends Participant{
@@ -17,5 +16,6 @@ public class Player extends Participant{
     @Override
     public void hit() {
         table.getDealer().deal(this);
+        System.out.println(this);
     }
 }
