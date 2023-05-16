@@ -28,5 +28,11 @@ public class Dealer extends Participant {
         }
     }
 
+    public Deck getDeck() {
+        return deck;
+    }
 
+    public List<Card> getPile() {
+        return pile;
+    }
 }
