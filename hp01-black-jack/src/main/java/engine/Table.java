@@ -33,7 +33,9 @@ public class Table {
 
     public void addPlayers() {
         for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new Player("unknown", this));
+            System.out.println("Enter name of p" + (i + 1) + ":");
+            String name = ui.getNames();
+            players.add(new Player(name, this));
         }
     }
 

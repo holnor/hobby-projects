@@ -10,4 +10,8 @@ public class UserInterface {
         System.out.println("Enter how many people would like to play (1-6):");
         return scanner.nextInt();
     }
+
+    public String getNames(){
+        return scanner.next();
+    }
 }
