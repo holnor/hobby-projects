@@ -44,6 +44,6 @@ public class Dealer extends Participant {
         for (Card card : hand) {
             value += card.getValue();
         }
-        return "DEALER\n----------------\n" + hand + "\t value: "+ value +"\n" + "\n_______________________";
+        return "\n----------DEALER----------\n" + hand + "\t value: "+ value + "\n__________________________\n";
     }
 }

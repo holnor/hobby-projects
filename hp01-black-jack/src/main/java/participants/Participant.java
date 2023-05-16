@@ -77,6 +77,6 @@ public abstract class Participant {
                 ", bet: " + bet +
                 ", isActive: " + isActive +
                 ",\nhand: " + hand + "\t value: "+ value +"\n" +
-                "-".repeat(50) + "\n";
+                "-".repeat(40) + "\n";
     }
 }
