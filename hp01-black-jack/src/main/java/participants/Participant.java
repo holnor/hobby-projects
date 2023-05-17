@@ -43,7 +43,6 @@ public abstract class Participant {
 
     public void looseBet() {
         bet = 0;
-        stand();
     }
 
     public void winBet() {
@@ -86,6 +85,10 @@ public abstract class Participant {
 
     public List<Card> getHand() {
         return hand;
+    }
+
+    public int getCoins() {
+        return coins;
     }
 
     @Override

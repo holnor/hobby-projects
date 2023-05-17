@@ -61,7 +61,7 @@ public class Table {
             for (Participant player : players) {
                 System.out.println(player);
                 Card lastCard = player.getHand().get(player.getHand().size() - 1);
-                if (lastCard.getRank() == 'A') {
+                if (lastCard.getRank() == 'A' && player.getHandValue() != BLACK_JACK) {
                     System.out.println(player);
                     System.out.println("Set Ace value (1 OR 11):");
                     lastCard.setValue(ui.getAceValue());
@@ -121,6 +121,11 @@ public class Table {
                             System.out.println("******* " + handValue + " ********");
                             command = "stand";
                         }
+
+                        if(handValue.equals("BUSTED!")){
+                            player.looseBet();
+                        }
+
                         System.out.println(player);
                         break;
                 }
@@ -157,40 +162,29 @@ public class Table {
             }
         }
 
+        for (Participant looser : loosers) {
+            looser.looseBet();
+        }
+
+
         System.out.println(dealer);
         System.out.println("Winners:");
+        System.out.println("--------------------");
         for (Participant winner : winners) {
+            winner.winBet();
             System.out.println(winner.getName() + ": " + winner.getHand() + " (" + winner.getHandValue()+ ")");
+            System.out.println("coins: " + winner.getCoins() + "\n");
         }
+        System.out.println("--------------------");
+
         System.out.println("Loosers:");
+        System.out.println("--------------------");
         for (Participant looser : loosers) {
             System.out.println(looser.getName() + ": " + looser.getHand() + " (" + looser.getHandValue()+ ")");
+            System.out.println("coins: " + looser.getCoins() + "\n");
         }
+        System.out.println("--------------------");
 
-    }
-
-    public void checkBusted(Participant player) {
-        if (checkHandValue(player).equals("BUSTED!")) {
-            System.out.println(player.getName() + " gets busted! Lost bet: " + player.getBet() + " coins");
-            player.looseBet();
-            System.out.println(player);
-        }
-    }
-
-    public void check(Participant player) {
-        if (checkHandValue(player).equals("BLACK JACK!")) {
-            System.out.println(dealer);
-            if (!checkHandValue(dealer).equals("BLACK JACK!")) {
-                System.out.println(player.getName() + " wins! Prize: " + player.getBet() * 2 + " coins");
-                player.winBet();
-                System.out.println(player);
-            } else {
-                player.takeBackBet();
-                System.out.println("DRAW! " + player.getName() + " bet is returned");
-            }
-        } else {
-            checkBusted(player);
-        }
     }
 
     public String checkHandValue(Participant player) {
