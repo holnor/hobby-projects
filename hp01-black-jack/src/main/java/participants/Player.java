@@ -17,6 +17,21 @@ public class Player extends Participant {
         insurance = bet / 2;
         coins -= insurance;
     }
+    public void winInsurance() {
+        coins += insurance * 2;
+        insurance = 0;
+    }
+    public void looseInsurance() {
+        insurance = 0;
+    }
+
+
+
+
+
+    public int getInsurance() {
+        return insurance;
+    }
 
     public void correctAceValue() {
 

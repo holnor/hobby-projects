@@ -24,6 +24,19 @@ public class UserInterface {
         return scanner.next();
     }
 
+    public char askInsurance(){
+        char input = scanner.next().charAt(0);
+
+        switch (input){
+            case 'y':
+            case 'n':
+                return input;
+            default:
+                System.out.println("invalid input. Try again (y/n)");
+                return askInsurance();
+        }
+    }
+
     public String getCommand() {
         String input = scanner.next();
 

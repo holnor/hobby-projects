@@ -45,8 +45,7 @@ public class Table {
         deck = dealer.getDeck().getDeck();
         dealer.getDeck().shuffle();
         Random random = new Random();
-        int cardsToRemove = random
-                .nextInt(CARDS_REMOVE_BOUND_HIGH - CARDS_REMOVE_BOUND_LOW + 1) + CARDS_REMOVE_BOUND_LOW;
+        int cardsToRemove = random.nextInt(CARDS_REMOVE_BOUND_HIGH - CARDS_REMOVE_BOUND_LOW + 1) + CARDS_REMOVE_BOUND_LOW;
 
         for (int i = 0; i < cardsToRemove; i++) {
             pile.add(deck.get(0));
@@ -55,7 +54,23 @@ public class Table {
     }
 
     public void firstHand() {
-        dealer.deal(dealer);
+        for (Player player : players) {
+            player.placeBet(Table.MIN_BET);
+        }
+        dealer.getHand().add(new Card('♠', 'A'));
+        System.out.println(dealer);
+        if (dealer.getHand().get(0).getRank() == 'A') {
+            for (Player player : players) {
+                System.out.println(player.getName() + "! Dealer has an Ace. Would you like to make insurance (y/n):");
+                if(ui.askInsurance() == 'y'){
+                    player.insure();
+                    System.out.println("Insured!");
+                }
+            }
+        }
+
+
+        //dealer.deal(dealer);
         for (int i = 0; i < FIRST_HAND_SIZE; i++) {
             dealer.deal(players);
             for (Player player : players) {
@@ -70,9 +85,6 @@ public class Table {
         }
         players.get(0).setActive(true);
 
-        for (Player player : players) {
-            player.placeBet(Table.MIN_BET);
-        }
 
         System.out.println(dealer);
         dealer.deal(dealer);
@@ -114,16 +126,16 @@ public class Table {
 
         for (Player player : players) {
             String command = "";
-                System.out.println(player);
+            System.out.println(player);
             while (player.isActive() && !command.equals("stand") && player.getHandValue() != BLACK_JACK) {
                 System.out.println(player.getName() + ", make an action!");
                 command = ui.getCommand();
 
-                        Card lastCard = player.getHand().get(player.getHand().size() - 1);
+                Card lastCard = player.getHand().get(player.getHand().size() - 1);
                 switch (command) {
                     case "hit":
                         player.hit();
-                        if (lastCard.getRank() == 'A'){
+                        if (lastCard.getRank() == 'A') {
                             System.out.println("Set Ace value (1 OR 11):");
                             lastCard.setValue(ui.getAceValue());
                         }
@@ -133,21 +145,12 @@ public class Table {
                             command = "stand";
                         }
 
-                        if(handValue.equals("BUSTED!")){
+                        if (handValue.equals("BUSTED!")) {
                             player.looseBet();
                         }
 
                         System.out.println(player);
                         break;
-
-                    case "insure":
-                        if (dealer.getHand().get(0).getRank() == 'A'){
-                            player.insure();
-
-
-                        }else {
-                            System.out.println("Last two cards values are not equal");
-                        }
                 }
             }
             nextPlayer();
@@ -156,7 +159,7 @@ public class Table {
         while (dealer.getHandValue() <= 16) {
             dealer.hit();
             Card lastCard = dealer.getHand().get(dealer.getHand().size() - 1);
-            if (lastCard.getRank() == 'A' && dealer.getHandValue() > 21){
+            if (lastCard.getRank() == 'A' && dealer.getHandValue() > 21) {
                 lastCard.setValue(1);
             }
         }
@@ -173,7 +176,12 @@ public class Table {
                 } else {
                     loosers.add(player);
                 }
+            } else if (dealer.getHandValue() == BLACK_JACK) {
+                if (player.getInsurance() > 0) {
+                    player.winInsurance();
+                }
             } else {
+                player.looseInsurance();
                 if (player.getHandValue() <= 21 && player.getHandValue() > dealer.getHandValue()) {
                     winners.add(player);
                 } else {
@@ -192,7 +200,8 @@ public class Table {
         System.out.println("--------------------");
         for (Player winner : winners) {
             winner.winBet();
-            System.out.println(winner.getName() + ": " + winner.getHand() + " (" + winner.getHandValue()+ ")");
+            String insurance = winner.getInsurance() > 0 ? ("insurance: " + Integer.toString(winner.getInsurance())) : "";
+            System.out.println(winner.getName() + ": " + winner.getHand() + " (" + winner.getHandValue() + ") " + insurance);
             System.out.println("coins: " + winner.getCoins() + "\n");
         }
         System.out.println("--------------------");
@@ -200,7 +209,8 @@ public class Table {
         System.out.println("Loosers:");
         System.out.println("--------------------");
         for (Player looser : loosers) {
-            System.out.println(looser.getName() + ": " + looser.getHand() + " (" + looser.getHandValue()+ ")");
+            String insurance = looser.getInsurance() > 0 ? ("insurance: " + Integer.toString(looser.getInsurance())) : "";
+            System.out.println(looser.getName() + ": " + looser.getHand() + " (" + looser.getHandValue() + ") " + insurance);
             System.out.println("coins: " + looser.getCoins() + "\n");
         }
         System.out.println("--------------------");
