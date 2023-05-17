@@ -57,12 +57,12 @@ public class Table {
         for (Player player : players) {
             player.placeBet(Table.MIN_BET);
         }
-        dealer.getHand().add(new Card('♠', 'A'));
+        dealer.deal(dealer);
         System.out.println(dealer);
         if (dealer.getHand().get(0).getRank() == 'A') {
             for (Player player : players) {
                 System.out.println(player.getName() + "! Dealer has an Ace. Would you like to make insurance (y/n):");
-                if(ui.askInsurance() == 'y'){
+                if (ui.askInsurance() == 'y') {
                     player.insure();
                     System.out.println("Insured!");
                 }
@@ -70,11 +70,9 @@ public class Table {
         }
 
 
-        //dealer.deal(dealer);
         for (int i = 0; i < FIRST_HAND_SIZE; i++) {
             dealer.deal(players);
             for (Player player : players) {
-                System.out.println(player);
                 Card lastCard = player.getHand().get(player.getHand().size() - 1);
                 if (lastCard.getRank() == 'A' && player.getHandValue() != BLACK_JACK) {
                     System.out.println(player);
@@ -84,9 +82,8 @@ public class Table {
             }
         }
         players.get(0).setActive(true);
+displayStats();
 
-
-        System.out.println(dealer);
         dealer.deal(dealer);
 
 
@@ -95,6 +92,7 @@ public class Table {
                 System.out.println("DEALER HAS BLACK JACK!");
                 if (player.getHandValue() == BLACK_JACK) {
                     System.out.println("******* TIE! ********");
+                    System.out.println(player);
                     player.takeBackBet();
                 }
             } else {
@@ -171,6 +169,7 @@ public class Table {
 
         for (Player player : players) {
             if (dealer.getHandValue() > 21) {
+                player.looseInsurance();
                 if (player.getHandValue() <= 21) {
                     winners.add(player);
                 } else {
@@ -180,6 +179,8 @@ public class Table {
                 if (player.getInsurance() > 0) {
                     player.winInsurance();
                 }
+                player.looseInsurance();
+                loosers.add(player);
             } else {
                 player.looseInsurance();
                 if (player.getHandValue() <= 21 && player.getHandValue() > dealer.getHandValue()) {
