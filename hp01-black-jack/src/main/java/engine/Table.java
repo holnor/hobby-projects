@@ -2,7 +2,7 @@ package engine;
 
 import cards.Card;
 import participants.Dealer;
-import participants.Participant;
+import participants.Player;
 import participants.Player;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class Table {
     public static final int DEALER_COINS = 1_000_000;
 
     private Dealer dealer;
-    private List<Participant> players;
+    private List<Player> players;
     private int numberOfPlayers;
     private List<Card> deck;
     private List<Card> pile;
@@ -58,7 +58,7 @@ public class Table {
         dealer.deal(dealer);
         for (int i = 0; i < FIRST_HAND_SIZE; i++) {
             dealer.deal(players);
-            for (Participant player : players) {
+            for (Player player : players) {
                 System.out.println(player);
                 Card lastCard = player.getHand().get(player.getHand().size() - 1);
                 if (lastCard.getRank() == 'A' && player.getHandValue() != BLACK_JACK) {
@@ -70,17 +70,27 @@ public class Table {
         }
         players.get(0).setActive(true);
 
-        for (Participant player : players) {
+        for (Player player : players) {
             player.placeBet(Table.MIN_BET);
         }
 
         System.out.println(dealer);
         dealer.deal(dealer);
-        for (Participant player : players) {
-            if (player.getHandValue() == BLACK_JACK){
-                System.out.println("******* BLACK JACK! ********");
+
+
+        for (Player player : players) {
+            if (dealer.getHandValue() == BLACK_JACK) {
+                System.out.println("DEALER HAS BLACK JACK!");
+                if (player.getHandValue() == BLACK_JACK) {
+                    System.out.println("******* TIE! ********");
+                    player.takeBackBet();
+                }
+            } else {
+                if (player.getHandValue() == BLACK_JACK) {
+                    System.out.println("******* BLACK JACK! ********");
+                }
+                System.out.println(player);
             }
-            System.out.println(player);
         }
     }
 
@@ -100,18 +110,19 @@ public class Table {
     }
 
     public void startTurn() {
+        System.out.println("--------------------ROUND BEGINS!-------------------------");
 
-        for (Participant player : players) {
+        for (Player player : players) {
             String command = "";
-            while (player.isActive() && !command.equals("stand") && player.getHandValue() != BLACK_JACK) {
                 System.out.println(player);
+            while (player.isActive() && !command.equals("stand") && player.getHandValue() != BLACK_JACK) {
                 System.out.println(player.getName() + ", make an action!");
                 command = ui.getCommand();
 
+                        Card lastCard = player.getHand().get(player.getHand().size() - 1);
                 switch (command) {
                     case "hit":
                         player.hit();
-                        Card lastCard = player.getHand().get(player.getHand().size() - 1);
                         if (lastCard.getRank() == 'A'){
                             System.out.println("Set Ace value (1 OR 11):");
                             lastCard.setValue(ui.getAceValue());
@@ -128,6 +139,15 @@ public class Table {
 
                         System.out.println(player);
                         break;
+
+                    case "insure":
+                        if (dealer.getHand().get(0).getRank() == 'A'){
+                            player.insure();
+
+
+                        }else {
+                            System.out.println("Last two cards values are not equal");
+                        }
                 }
             }
             nextPlayer();
@@ -136,17 +156,17 @@ public class Table {
         while (dealer.getHandValue() <= 16) {
             dealer.hit();
             Card lastCard = dealer.getHand().get(dealer.getHand().size() - 1);
-            if (lastCard.getValue() == 'A' && dealer.getHandValue() > 21){
+            if (lastCard.getRank() == 'A' && dealer.getHandValue() > 21){
                 lastCard.setValue(1);
             }
         }
 
 
-        List<Participant> winners = new ArrayList<>();
-        List<Participant> loosers = new ArrayList<>();
+        List<Player> winners = new ArrayList<>();
+        List<Player> loosers = new ArrayList<>();
 
 
-        for (Participant player : players) {
+        for (Player player : players) {
             if (dealer.getHandValue() > 21) {
                 if (player.getHandValue() <= 21) {
                     winners.add(player);
@@ -162,7 +182,7 @@ public class Table {
             }
         }
 
-        for (Participant looser : loosers) {
+        for (Player looser : loosers) {
             looser.looseBet();
         }
 
@@ -170,7 +190,7 @@ public class Table {
         System.out.println(dealer);
         System.out.println("Winners:");
         System.out.println("--------------------");
-        for (Participant winner : winners) {
+        for (Player winner : winners) {
             winner.winBet();
             System.out.println(winner.getName() + ": " + winner.getHand() + " (" + winner.getHandValue()+ ")");
             System.out.println("coins: " + winner.getCoins() + "\n");
@@ -179,7 +199,7 @@ public class Table {
 
         System.out.println("Loosers:");
         System.out.println("--------------------");
-        for (Participant looser : loosers) {
+        for (Player looser : loosers) {
             System.out.println(looser.getName() + ": " + looser.getHand() + " (" + looser.getHandValue()+ ")");
             System.out.println("coins: " + looser.getCoins() + "\n");
         }
@@ -187,7 +207,7 @@ public class Table {
 
     }
 
-    public String checkHandValue(Participant player) {
+    public String checkHandValue(Player player) {
         int handValue = player.getHandValue();
 
         if (handValue > Table.BLACK_JACK) {
@@ -201,7 +221,7 @@ public class Table {
 
 
     public void displayStats() {
-        for (Participant player : players) {
+        for (Player player : players) {
             System.out.println(player);
         }
     }
@@ -209,7 +229,7 @@ public class Table {
     //FOR TESTING
 
 
-    public List<Participant> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 

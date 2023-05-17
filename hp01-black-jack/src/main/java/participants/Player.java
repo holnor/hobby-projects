@@ -2,18 +2,23 @@ package participants;
 
 import engine.Table;
 
-public class Player extends Participant{
+public class Player extends Participant {
+    private int insurance = 0;
 
 
     public Player(String name, Table table) {
         super(name, table);
     }
 
-    public void split(){}
+    public void split() {
+    }
 
-    public void insure(){}
+    public void insure() {
+        insurance = bet / 2;
+        coins -= insurance;
+    }
 
-    public void correctAceValue(){
+    public void correctAceValue() {
 
     }
 

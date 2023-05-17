@@ -43,9 +43,7 @@ public abstract class Participant {
 
     public void looseBet() {
         bet = 0;
-    }
-
-    public void winBet() {
+    }    public void winBet() {
         coins += bet * 2;
         bet = 0;
     }
@@ -54,6 +52,7 @@ public abstract class Participant {
         coins += bet;
         bet = 0;
     }
+
 
     public void setActive(boolean active) {
         isActive = active;

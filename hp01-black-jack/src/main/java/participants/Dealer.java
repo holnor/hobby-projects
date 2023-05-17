@@ -23,7 +23,7 @@ public class Dealer extends Participant {
         deck.getDeck().remove(0);
     }
 
-    public void deal(List<Participant> players) {
+    public void deal(List<Player> players) {
         for (Participant player : players) {
             player.hand.add(deck.getDeck().get(0));
             deck.getDeck().remove(0);

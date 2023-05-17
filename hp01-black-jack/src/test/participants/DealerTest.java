@@ -10,9 +10,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DealerTest {
-    private List<Participant> players;
-    private Participant aladar = new Player("Aladár", null);
-    private Participant bela = new Player("Béla", null);
+    private List<Player> players;
+    private Player aladar = new Player("Aladár", null);
+    private Player bela = new Player("Béla", null);
     private Dealer dealer;
 
     @BeforeEach
