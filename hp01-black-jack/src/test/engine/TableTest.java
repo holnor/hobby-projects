@@ -27,7 +27,7 @@ class TableTest {
     }
 
     @Test
-    void test_init_randomCradsRemoved() {
+    void test_init_randomCardsRemoved() {
         table.init();
         int result = table.getDealer().getDeck().getDeck().size();
         System.out.println(result);

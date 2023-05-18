@@ -20,6 +20,7 @@ public class Table {
     public static final int DEALER_COINS = 1_000_000;
 
     private Dealer dealer;
+    private Player splitHand;
     private List<Player> players;
     private int numberOfPlayers;
     private List<Card> deck;
@@ -36,7 +37,7 @@ public class Table {
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("Enter name of p" + (i + 1) + ":");
             String name = ui.getNames();
-            players.add(new Player(name, this));
+            players.add(new Player(name, 500, this));
         }
     }
 
@@ -82,7 +83,7 @@ public class Table {
             }
         }
         players.get(0).setActive(true);
-displayStats();
+        displayStats();
 
         dealer.deal(dealer);
 
@@ -119,6 +120,24 @@ displayStats();
         }
     }
 
+    public String checkHit(Player player) {
+        Card lastCard = player.getHand().get(player.getHand().size() - 1);
+        player.hit();
+        if (lastCard.getRank() == 'A') {
+            System.out.println("Set Ace value (1 OR 11):");
+            lastCard.setValue(ui.getAceValue());
+        }
+        String handValue = checkHandValue(player);
+        if (handValue.equals("BUSTED!") || handValue.equals("BLACK JACK!")) {
+            System.out.println("******* " + handValue + " ********");
+        }
+
+        if (handValue.equals("BUSTED!")) {
+            player.looseBet();
+        }
+        return handValue;
+    }
+
     public void startTurn() {
         System.out.println("--------------------ROUND BEGINS!-------------------------");
 
@@ -132,23 +151,37 @@ displayStats();
                 Card lastCard = player.getHand().get(player.getHand().size() - 1);
                 switch (command) {
                     case "hit":
-                        player.hit();
-                        if (lastCard.getRank() == 'A') {
-                            System.out.println("Set Ace value (1 OR 11):");
-                            lastCard.setValue(ui.getAceValue());
-                        }
-                        String handValue = checkHandValue(player);
-                        if (handValue.equals("BUSTED!") || handValue.equals("BLACK JACK!")) {
-                            System.out.println("******* " + handValue + " ********");
-                            command = "stand";
-                        }
+                        if (player.hasSplitHand()){
+                            if (checkHit(splitHand).equals("BUSTED!")){
+                                player.setCoins(player.getCoins() - player.getBet());
+                                splitHand = null;
+                                player.setHasSplitHand(false);
+                                System.out.println("Continue with ");
+                            }
+                        } else {
 
-                        if (handValue.equals("BUSTED!")) {
-                            player.looseBet();
-                        }
 
-                        System.out.println(player);
+                            if (checkHit(player).equals("BUSTED!")) {
+                                command = "stand";
+                            }
+                        }
+                            System.out.println(player);
                         break;
+
+                    case "split":
+                        if (lastCard.getValue() == player.getHand().get(player.getHand().size() - 2).getValue()) {
+                            player.setHasSplitHand(true);
+                            splitHand = new Player("SPLITHAND", 0, this);
+                            splitHand.getHand().add(lastCard);
+                            player.getHand().remove(lastCard);
+                            splitHand.setBet(player.getBet());
+                            //TODO handle more splitHands
+
+
+                        } else {
+                            System.out.println("Split only possible when last two cards values are equal.");
+                        }
+
                 }
             }
             nextPlayer();

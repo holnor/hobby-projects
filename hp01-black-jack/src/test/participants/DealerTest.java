@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DealerTest {
     private List<Player> players;
-    private Player aladar = new Player("Aladár", null);
-    private Player bela = new Player("Béla", null);
+    private Player aladar = new Player("Aladár",100, null);
+    private Player bela = new Player("Béla",100, null);
     private Dealer dealer;
 
     @BeforeEach

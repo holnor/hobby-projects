@@ -4,10 +4,12 @@ import engine.Table;
 
 public class Player extends Participant {
     private int insurance = 0;
+    private boolean hasSplitHand = false;
 
 
-    public Player(String name, Table table) {
+    public Player(String name, int coins, Table table) {
         super(name, table);
+        this.coins = coins;
     }
 
     public void split() {
@@ -35,6 +37,14 @@ public class Player extends Participant {
 
     public void correctAceValue() {
 
+    }
+
+    public boolean hasSplitHand() {
+        return hasSplitHand;
+    }
+
+    public void setHasSplitHand(boolean hasSplitHand) {
+        this.hasSplitHand = hasSplitHand;
     }
 
     @Override

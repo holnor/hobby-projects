@@ -33,7 +33,7 @@ public abstract class Participant {
 
     public void placeBet(int amount) {
         if (amount > coins) {
-            bet = amount;
+            bet = coins;
             coins = 0;
         } else {
             bet = amount;
@@ -68,6 +68,14 @@ public abstract class Participant {
             value += card.getValue();
         }
         return value;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void setBet(int bet) {
+        this.bet = bet;
     }
 
     public abstract void correctAceValue();
